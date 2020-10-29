@@ -1,0 +1,12 @@
+# virtual enviroment
+/.env
+
+# Cache
+__pycache__/
+
+#VS Code
+/.vscode
+
+# Static files
+/tip_top_backend/static/
+/tip_top_backend/media/materials/*

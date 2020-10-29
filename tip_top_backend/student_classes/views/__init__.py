@@ -1,0 +1,1 @@
+from .student_class_view import StudentClassAPIView

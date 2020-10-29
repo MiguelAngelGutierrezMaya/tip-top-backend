@@ -1,0 +1,1 @@
+from .city_serializer import CityModelSerializer

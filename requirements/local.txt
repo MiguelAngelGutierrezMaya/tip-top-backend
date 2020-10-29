@@ -1,0 +1,10 @@
+-r ./base.txt
+
+# Debugging
+ipdb==0.12.3
+
+# Tools
+django-extensions==2.2.5
+
+# Code quality
+flake8==3.7.9

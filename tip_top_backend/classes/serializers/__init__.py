@@ -1,0 +1,2 @@
+from .class_serializer import ClassModelSerializer
+from .class_serializer import ClassSignUpSerializer

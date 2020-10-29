@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  django: &django
+    build:
+      context: .
+      dockerfile: ./compose/local/django/Dockerfile
+    image: api_gateway_local_django
+    container_name: tip_top_backend_local_django
+    volumes:
+      - .:/app
+    env_file:
+      - ./.envs/.local/.django
+      - ./.envs/.local/.postgres
+    ports:
+      - "9000:8000"
+    external_links:
+      - postgres-dev:postgres
+    networks:
+      - containers_network
+    environment:
+      - "VIRTUAL_HOST=api.tip-top-backend-dev.com"
+    command: /start
+
+networks:
+  containers_network:
+    external: true
