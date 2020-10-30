@@ -39,6 +39,6 @@ RUN chmod +x /start
 COPY . /app
 
 WORKDIR /app
-RUN mkdir -p /app/api_gateway/static
+#RUN mkdir -p /app/tip_top_backend/static
 
 ENTRYPOINT ["/entrypoint"]

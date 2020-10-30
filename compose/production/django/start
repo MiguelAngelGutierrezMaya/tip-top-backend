@@ -5,4 +5,4 @@ set -o nounset
 
 
 python /app/manage.py collectstatic --noinput
-/usr/local/bin/gunicorn api_gateway.wsgi -b 0.0.0.0:80
+/usr/local/bin/gunicorn tip_top_backend.wsgi -b 0.0.0.0:80
