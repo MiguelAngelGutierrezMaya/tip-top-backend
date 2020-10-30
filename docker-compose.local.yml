@@ -17,11 +17,11 @@ services:
     external_links:
       - postgres-dev:postgres
     networks:
-      - contenedores
+      - containers_network
     environment:
       - "VIRTUAL_HOST=api.tiptopenglish.co"
     command: /start
 
 networks:
-  contenedores:
+  containers_network:
     external: true
