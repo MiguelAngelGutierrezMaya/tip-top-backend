@@ -8,18 +8,18 @@ services:
     image: tip_top_backend_production_django
     container_name: tip_top_backend_django
     volumes:
-      - ./tip_top_backend:/app
+      - .:/app
     env_file:
       - ./.envs/.production/.django
       - ./.envs/.production/.postgres
     ports:
       - "9000:80"
     external_links:
-      - postgres-prod:postgres
+      - postgres-dev:postgres
     networks:
       - contenedores
     environment:
-      - "VIRTUAL_HOST=api.tiptopenglish.co"
+      - "VIRTUAL_HOST=api.tip-top.pcaingenieria.co"
     command: /start
 
 networks:
