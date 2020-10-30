@@ -15,7 +15,7 @@ services:
     ports:
       - "9000:80"
     external_links:
-      - postgres-dev:postgres
+      - postgres-prod:postgres
     networks:
       - contenedores
     environment:
