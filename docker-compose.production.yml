@@ -15,11 +15,11 @@ services:
     ports:
       - "9000:80"
     external_links:
-      - postgres-dev:postgres
+      - postgres-prod:postgres
     networks:
       - contenedores
     environment:
-      - "VIRTUAL_HOST=api.tip-top.pcaingenieria.co"
+      - "VIRTUAL_HOST=api.tiptopenglish.co"
     command: /start
 
 networks:
