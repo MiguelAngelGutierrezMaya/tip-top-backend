@@ -117,7 +117,7 @@ MIDDLEWARE = [
 CORS_ORIGIN_WHITELIST = []
 
 # Static files
-STATIC_ROOT = str(ROOT_DIR('/staticfiles'))
+STATIC_ROOT = str(APPS_DIR('/staticfiles'))
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     str(APPS_DIR.path('static')),
