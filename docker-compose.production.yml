@@ -12,14 +12,15 @@ services:
     env_file:
       - ./.envs/.production/.django
       - ./.envs/.production/.postgres
-    ports:
-      - "9000:80"
+    expose:
+      - 80
     external_links:
       - postgres-prod:postgres
     networks:
       - contenedores
     environment:
       - "VIRTUAL_HOST=api.tiptopenglish.co"
+      - "LETSENCRYPT_HOST=api.tiptopenglish.co"
     command: /start
 
 networks:
