@@ -55,17 +55,22 @@ class ClassAPIView(APIView):
             class_obj = serializer.save()
             request.data['class_obj_id'] = class_obj.id
             lesson = Lesson.objects.filter(parent_id=request.data['lesson_id']).first()
-
+            print('llega aqui 1')
             if lesson is None:
+                print('llega aqui 2')
                 lesson = Lesson.objects.get(pk=request.data['lesson_id'])
                 unit = Unit.objects.filter(parent_id=lesson.unit.id).first()
                 if unit is None:
+                    print('llega aqui 3')
                     level = Level.objects.filter(parent_id=lesson.unit.level.id).first()
                     if not level is None:
+                        print('llega aqui 4')
                         lesson = Lesson.objects.filter(unit__level_id=level.id).order_by('id').first()
                 else:
+                    print('llega aqui 5')
                     lesson = Lesson.objects.filter(unit_id=unit.id).order_by('id').first()
             for student in request.data['students']:
+                print('llega aqui 6')
                 request.data['student_id'] = student['id']
                 serializer = StudentClassSignUpSerializer(data=request.data)
                 serializer.is_valid(raise_exception=True)
