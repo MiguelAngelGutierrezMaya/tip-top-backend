@@ -13,3 +13,4 @@ class UserAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name', 'username', 'document', 'city', 'role',)
     search_fields = ('first_name', 'last_name', 'username', 'document', 'city', 'role',)
     list_filter = ('first_name', 'last_name', 'username', 'document', 'city', 'role',)
+    readonly_fields = ('password',)

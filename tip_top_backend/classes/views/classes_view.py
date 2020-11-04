@@ -49,60 +49,63 @@ class ClassAPIView(APIView):
 
     def post(self, request, *args, **kwargs):
         """Handle HTTP POST request."""
-        serializer = ClassSignUpSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        class_obj = serializer.save()
-        request.data['class_obj_id'] = class_obj.id
-        lesson = Lesson.objects.filter(parent_id=request.data['lesson_id']).first()
-        if lesson is None:
-            lesson = Lesson.objects.get(pk=request.data['lesson_id'])
-            unit = Unit.objects.filter(parent_id=lesson.unit.id).first()
-            if unit is None:
-                level = Level.objects.filter(parent_id=lesson.unit.level.id).first()
-                if not level is None:
-                    lesson = Lesson.objects.filter(unit__level_id=level.id).order_by('id').first()
-            else:
-                lesson = Lesson.objects.filter(unit_id=unit.id).order_by('id').first()
-        for student in request.data['students']:
-            request.data['student_id'] = student['id']
-            serializer = StudentClassSignUpSerializer(data=request.data)
+        try:
+            serializer = ClassSignUpSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
-            serializer.save()
-            student_obj = Student.objects.get(pk=student['id'])
-            student_obj.current_lesson_id = lesson.id
-            student_obj.save()
+            class_obj = serializer.save()
+            request.data['class_obj_id'] = class_obj.id
+            lesson = Lesson.objects.filter(parent_id=request.data['lesson_id']).first()
+            if lesson is None:
+                lesson = Lesson.objects.get(pk=request.data['lesson_id'])
+                unit = Unit.objects.filter(parent_id=lesson.unit.id).first()
+                if unit is None:
+                    level = Level.objects.filter(parent_id=lesson.unit.level.id).first()
+                    if not level is None:
+                        lesson = Lesson.objects.filter(unit__level_id=level.id).order_by('id').first()
+                else:
+                    lesson = Lesson.objects.filter(unit_id=unit.id).order_by('id').first()
+            for student in request.data['students']:
+                request.data['student_id'] = student['id']
+                serializer = StudentClassSignUpSerializer(data=request.data)
+                serializer.is_valid(raise_exception=True)
+                serializer.save()
+                student_obj = Student.objects.get(pk=student['id'])
+                student_obj.current_lesson_id = lesson.id
+                student_obj.save()
 
-            data_obj = {
-                "student": student_obj.user.first_name + ' ' + student_obj.user.last_name,
-                "lesson": class_obj.lesson.title,
-                "date": class_obj.init.strftime("%A, %d th %B - %Y"),
-                "time": class_obj.init.strftime("%H:%M %p"),
-                "date_init": class_obj.init.strftime("%Y-%m-%d %H:%M"),
-                "url": env('DJANGO_APP_URL'),
-                "type": "assignment"
-            }
+                data_obj = {
+                    "student": student_obj.user.first_name + ' ' + student_obj.user.last_name,
+                    "lesson": class_obj.lesson.title,
+                    "date": class_obj.init.strftime("%A, %d th %B - %Y"),
+                    "time": class_obj.init.strftime("%H:%M %p"),
+                    "date_init": class_obj.init.strftime("%Y-%m-%d %H:%M"),
+                    "url": env('DJANGO_APP_URL'),
+                    "type": "assignment"
+                }
 
-            request.data['type'] = 'EMAIL'
-            request.data['status'] = 'PENDING'
-            request.data['to'] = student_obj.user.email
-            request.data['data'] = json.dumps(data_obj)
-            # Save Class notification
-            request.data['title'] = 'Clase asignada, Assigned class'
-            request.data['template'] = 'email/email-asignacion'
-            serializer = NotificationSignUpSerializer(data=request.data)
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
-            # Save Class reminder notification
-            request.data['title'] = 'Recordatorio de clase, Class reminder'
-            request.data['template'] = 'email/email-recordatorio'
-            data_obj['type'] = "reminder"
-            request.data['data'] = json.dumps(data_obj)
-            serializer = NotificationSignUpSerializer(data=request.data)
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
+                request.data['type'] = 'EMAIL'
+                request.data['status'] = 'PENDING'
+                request.data['to'] = student_obj.user.email
+                request.data['data'] = json.dumps(data_obj)
+                # Save Class notification
+                request.data['title'] = 'Clase asignada, Assigned class'
+                request.data['template'] = 'email/email-asignacion'
+                serializer = NotificationSignUpSerializer(data=request.data)
+                serializer.is_valid(raise_exception=True)
+                serializer.save()
+                # Save Class reminder notification
+                request.data['title'] = 'Recordatorio de clase, Class reminder'
+                request.data['template'] = 'email/email-recordatorio'
+                data_obj['type'] = "reminder"
+                request.data['data'] = json.dumps(data_obj)
+                serializer = NotificationSignUpSerializer(data=request.data)
+                serializer.is_valid(raise_exception=True)
+                serializer.save()
 
-        data = ClassModelSerializer(class_obj).data
-        return Response(data, status=status.HTTP_201_CREATED)
+            data = ClassModelSerializer(class_obj).data
+            return Response(data, status=status.HTTP_201_CREATED)
+        except Exception as ex:
+            return Response({'msg': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def patch(self, request, *args, **kwargs):
         """Handle HTTP PATCH request."""
