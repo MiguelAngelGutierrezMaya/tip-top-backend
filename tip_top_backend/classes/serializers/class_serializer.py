@@ -41,6 +41,7 @@ class ClassSignUpSerializer(FriendlyErrorMessagesMixin, serializers.Serializer):
     Handle sign up data validation and class creation.
     """
 
+    id = serializers.ReadOnlyField()
     user_id = serializers.IntegerField(write_only=True)
     lesson_id = serializers.IntegerField(write_only=True)
     init = serializers.DateTimeField()
