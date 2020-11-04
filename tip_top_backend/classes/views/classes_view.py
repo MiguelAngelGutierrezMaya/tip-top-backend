@@ -62,6 +62,7 @@ class ClassAPIView(APIView):
                     level = Level.objects.filter(parent_id=lesson.unit.level.id).first()
                     if not level is None:
                         lesson = Lesson.objects.filter(unit__level_id=level.id).order_by('id').first()
+                        print('llega aqui 0')
                         print(lesson)
                 else:
                     lesson = Lesson.objects.filter(unit_id=unit.id).order_by('id').first()
