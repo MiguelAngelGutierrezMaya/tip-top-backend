@@ -24,6 +24,7 @@ class User(AuditModel, AbstractUser):
     document_number = models.CharField('Documento', max_length=15, null=False, blank=False)
     email = models.EmailField('Email address', unique=True)
     admission_date = models.DateTimeField(default=datetime.now, blank=True)
+    link = models.URLField('Enlace de videollamada', max_length=200, null=True, blank=True)
 
     # ManyToOne Relations
     role = models.ForeignKey('roles.Role', default=1, on_delete=models.CASCADE)

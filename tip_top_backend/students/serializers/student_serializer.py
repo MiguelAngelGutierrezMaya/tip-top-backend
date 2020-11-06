@@ -24,6 +24,7 @@ class StudentModelSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'user',
+            'teacher',
             'current_lesson'
         )
 
@@ -35,6 +36,7 @@ class StudentSignUpSerializer(FriendlyErrorMessagesMixin, serializers.Serializer
     """
 
     user_id = serializers.IntegerField(write_only=True)
+    teacher = serializers.IntegerField(write_only=True, default=None)
     current_lesson_id = serializers.IntegerField(write_only=True)
     genre = serializers.CharField(max_length=30)
 

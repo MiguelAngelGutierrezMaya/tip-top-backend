@@ -18,6 +18,7 @@ class Student(AuditModel):
         choices=Constants.GENRES,
         default=Constants.MALE,
     )
+    teacher = models.IntegerField(blank=True, null=True, default=0)
 
     # ManyToOne Relations
     user = models.ForeignKey('users.User', on_delete=models.CASCADE)

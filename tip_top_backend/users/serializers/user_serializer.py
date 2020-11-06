@@ -43,7 +43,8 @@ class UserModelSerializer(FriendlyErrorMessagesMixin, serializers.ModelSerialize
             'admission_date',
             'role',
             'document',
-            'city'
+            'city',
+            'link'
         )
 
 
@@ -64,7 +65,8 @@ class UserSignUpSerializer(FriendlyErrorMessagesMixin, serializers.Serializer):
     document_number = serializers.CharField(max_length=15)
     password = serializers.CharField(min_length=8, max_length=30)
     password_confirmation = serializers.CharField(min_length=8, max_length=30)
-    username = serializers.CharField(min_length=5, max_length=20,)
+    username = serializers.CharField(min_length=5, max_length=20)
+    link = serializers.CharField(allow_blank=True, allow_null=True, max_length=200)
     email = serializers.EmailField()
     admission_date = serializers.DateTimeField()
 

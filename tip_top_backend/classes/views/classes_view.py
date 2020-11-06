@@ -49,10 +49,10 @@ class ClassAPIView(APIView):
 
     def post(self, request, *args, **kwargs):
         """Handle HTTP POST request."""
+        serializer = ClassSignUpSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        class_obj = serializer.save()
         try:
-            serializer = ClassSignUpSerializer(data=request.data)
-            serializer.is_valid(raise_exception=True)
-            class_obj = serializer.save()
             request.data['class_obj_id'] = class_obj.id
             lesson = Lesson.objects.filter(parent_id=request.data['lesson_id']).first()
             if lesson is None:
@@ -62,8 +62,6 @@ class ClassAPIView(APIView):
                     level = Level.objects.filter(parent_id=lesson.unit.level.id).first()
                     if not level is None:
                         lesson = Lesson.objects.filter(unit__level_id=level.id).order_by('id').first()
-                        print('llega aqui 0')
-                        print(lesson)
                 else:
                     lesson = Lesson.objects.filter(unit_id=unit.id).order_by('id').first()
             for student in request.data['students']:
@@ -72,9 +70,7 @@ class ClassAPIView(APIView):
                 serializer.is_valid(raise_exception=True)
                 serializer.save()
                 student_obj = Student.objects.get(pk=student['id'])
-                print('llega aqui 1')
                 student_obj.current_lesson_id = lesson.id
-                print('llega aqui 2')
                 student_obj.save()
 
                 data_obj = {
