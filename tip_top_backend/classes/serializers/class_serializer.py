@@ -52,7 +52,7 @@ class ClassSignUpSerializer(FriendlyErrorMessagesMixin, serializers.Serializer):
         """Verify dates."""
         init = data['init']
         end = data['end']
-        class_obj = Class.objects.filter(init__gte=init, end__lte=end, state=True, user_id=data['user_id']).first()
+        class_obj = Class.objects.filter(init__lte=init, end__gte=init, state=True, user_id=data['user_id']).first()
         current_date = (datetime.datetime.now() - datetime.timedelta(hours=4))
         if current_date > init:
             self.register_error(

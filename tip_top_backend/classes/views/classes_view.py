@@ -49,6 +49,12 @@ class ClassAPIView(APIView):
 
     def post(self, request, *args, **kwargs):
         """Handle HTTP POST request."""
+        for student in request.data['students']:
+            student_class = StudentClass.objects.filter(
+                student_id=student['id'], class_obj__init__lte=request.data['init'], class_obj__end__gte=request.data['init'], class_obj__state=True)
+            if student_class:
+                return Response(f"You cannot schedule the student on this schedule because they already have a class scheduled in a range that contains the entered start date,No puedes programar al estudiante en este horario porque ya tiene una clase programada en un rango que contiene la fecha de inicio ingresada", status=status.HTTP_400_BAD_REQUEST)
+
         serializer = ClassSignUpSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         class_obj = serializer.save()

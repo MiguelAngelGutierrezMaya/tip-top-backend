@@ -13,14 +13,13 @@
         }
 
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
             height: 100vh;
-            width: 100%;
+            width: 100vw;
+            padding-top: 50px;
         }
 
         .container {
+            margin: auto;
             width: 300px;
             background-color: #753e8a;
             padding: 2em 1em;
@@ -33,7 +32,7 @@
         }
 
         .subcontainer {
-            margin: 0 auto;
+            margin: auto;
         }
 
         .section-text {
@@ -45,14 +44,13 @@
         }
 
         .section-date {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background-image: url("./img/bg-date.png");
+            margin: auto;
+            text-align: center;
+            background-image: url("cid:bg-date.png");
             background-repeat: no-repeat;
             background-position: center;
             background-size: contain;
+            width: 100%;
             height: 7em;
         }
 
@@ -71,13 +69,12 @@
         }
 
         .link-container {
-            margin: 1em 0;
-            display: flex;
-            justify-content: center;
+            margin: 2em 0;
+            display: block;
+            text-align: center;
         }
 
         .link {
-            text-align: center;
             background-color: #38b1a8;
             padding: 20px 30px;
             color: #fff;
@@ -120,7 +117,7 @@
                 <h2 class="h-time">{{time}}</h2>
             </div>
             <div class="link-container">
-                <a href="{{url}}" class="link">Link para ingresar a la clase</a>
+                <a href="{{url}}" class="link" style="color: #fff;">Link para ingresar a la clase</a>
             </div>
             <p class="subtext">Recuerda ingresar 10 minutos antes.</p>
         </div>

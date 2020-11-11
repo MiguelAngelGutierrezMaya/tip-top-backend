@@ -13,16 +13,15 @@
         }
 
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
             height: 100vh;
-            width: 100%;
+            width: 100vw;
+            padding-top: 50px;
         }
 
         .container {
+            margin: auto;
             width: 300px;
-            background-color: #753e8a;
+            background-color: #e86c59;
             padding: 2em 1em;
             border-radius: 20px;
             height: auto;
@@ -33,7 +32,7 @@
         }
 
         .subcontainer {
-            margin: 0 auto;
+            margin: auto;
         }
 
         .section-text {
@@ -45,14 +44,13 @@
         }
 
         .section-date {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background-image: url("./img/bg-date.png");
+            margin: auto;
+            text-align: center;
+            background-image: url("cid:bg-date2.png");
             background-repeat: no-repeat;
             background-position: center;
             background-size: contain;
+            width: 100%;
             height: 7em;
         }
 
@@ -64,21 +62,20 @@
         }
 
         .h-time {
-            color: #fbf1ad;
+            color: #FBF1AD;
             font-size: 3em;
             font-family: poppins, sans;
             font-weight: 600;
         }
 
         .link-container {
-            margin: 1em 0;
-            display: flex;
-            justify-content: center;
+            margin: 2em 0;
+            display: block;
+            text-align: center;
         }
 
         .link {
-            text-align: center;
-            background-color: #38b1a8;
+            background-color: #753E8A;
             padding: 20px 30px;
             color: #fff;
             border-radius: 10px;
@@ -88,7 +85,7 @@
         }
 
         .link:hover {
-            background-color: #38b1a9d2;
+            background-color: #743E8A;
             transition: all 0.3s ease-in-out;
         }
 
@@ -120,7 +117,7 @@
                 <h2 class="h-time">{{time}}</h2>
             </div>
             <div class="link-container">
-                <a href="{{url}}" class="link">Link para ingresar a la clase</a>
+                <a href="{{url}}" class="link" style="color: #fff;">Link para ingresar a la clase</a>
             </div>
             <p class="subtext">Recuerda ingresar 10 minutos antes.</p>
         </div>

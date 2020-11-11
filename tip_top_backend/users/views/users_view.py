@@ -71,12 +71,11 @@ class UserAPIView(APIView):
     def get(self, request, *args, **kwargs):
         """Handle HTTP GET request."""
         if 'email' in request.GET:
-            users = User.objects.filter(email=request.GET['email'])
+            users = User.objects.filter(email__icontains=request.GET['email'])
         elif 'first_name' in request.GET:
-            # users = User.objects.filter(first_name__contains=request.GET['first_name'])
-            users = User.objects.filter(first_name__istartswith=request.GET['first_name'])
+            users = User.objects.filter(first_name__icontains=request.GET['first_name'])
             if not users:
-                users = User.objects.filter(username__istartswith=request.GET['first_name'])
+                users = User.objects.filter(username__icontains=request.GET['first_name'])
         elif 'role_teacher' in request.GET:
             users = User.objects.filter(role__name=Constants.ROLE_TEACHER)
         else:

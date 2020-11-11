@@ -28,8 +28,7 @@ class LessonAPIView(APIView):
         """Handle HTTP GET request."""
         if not 'unit_id' in request.GET:
             if 'title' in request.GET:
-                # lessons = Lesson.objects.filter(title__contains=request.GET['title'])
-                lessons = Lesson.objects.filter(title__istartswith=request.GET['title'])
+                lessons = Lesson.objects.filter(title__icontains=request.GET['title'])
             elif 'last_lesson' in request.GET:
                 lessons = Lesson.objects.first()
             else:
