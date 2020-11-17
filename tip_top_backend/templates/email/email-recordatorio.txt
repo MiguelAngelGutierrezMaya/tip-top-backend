@@ -119,7 +119,7 @@
             <div class="link-container">
                 <a href="{{url}}" class="link" style="color: #fff;">Link para ingresar a la clase</a>
             </div>
-            <p class="subtext">Recuerda ingresar 10 minutos antes.</p>
+            <p class="subtext">Recuerda ingresar 5 minutos antes.</p>
         </div>
     </div>
 </body>

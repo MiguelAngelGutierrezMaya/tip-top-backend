@@ -26,7 +26,6 @@ def notification_service():
     for notification in notifications:
         if notification.type == 'EMAIL':
             data = json.loads(notification.data)
-            print(data)
             msg = MIMEMultipart('alternative')
             msg['Subject'] = notification.title
             msg['From'] = email.utils.formataddr((env('NOTIFIER_NAME'), env('NOTIFIER_EMAIL')))

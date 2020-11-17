@@ -9,9 +9,9 @@ DJANGO_ALLOWED_HOSTS=localhost,test.tiptopenglish.co,api.tiptopenglish.co
 DJANGO_CORS_ORIGIN_WHITELIST=https://test.tiptopenglish.co
 
 # Notifier Email
-NOTIFIER_EMAIL=mgutierrez@pcasistencias.com
+NOTIFIER_EMAIL=app@mg.tiptopenglish.co
 NOTIFIER_NAME=Tip-Top-English
-USERNAME_SMTP=mgutierrez@pcasistencias.com
-PASSWORD_SMTP=m1gu3l4ng3lgut13rr3z
-HOST_SMTP=smtp.gmail.com
+USERNAME_SMTP=app@mg.tiptopenglish.co
+PASSWORD_SMTP=2521cc624ca778074ea2d68ec716df91-ba042922-953cb666
+HOST_SMTP=smtp.mailgun.org
 PORT_SMTP=587

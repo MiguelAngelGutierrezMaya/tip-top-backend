@@ -54,11 +54,15 @@ class ClassAPIView(APIView):
                 student_id=student['id'], class_obj__init__lte=request.data['init'], class_obj__end__gte=request.data['init'], class_obj__state=True)
             if student_class:
                 return Response(f"You cannot schedule the student on this schedule because they already have a class scheduled in a range that contains the entered start date,No puedes programar al estudiante en este horario porque ya tiene una clase programada en un rango que contiene la fecha de inicio ingresada", status=status.HTTP_400_BAD_REQUEST)
-
-        serializer = ClassSignUpSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        class_obj = serializer.save()
+            student_class = StudentClass.objects.filter(
+                student_id=student['id'], class_obj__lesson_id=request.data['lesson_id']).first()
+            if student_class:
+                pass
+                #return Response(f"A class with the same content as the lesson has already been scheduled for the student {student_class.student.user.first_name} {student_class.student.user.last_name},Ya ha sido programada una clase con el mismo contenido de la lección para el estudiante {student_class.student.user.first_name} {student_class.student.user.last_name}", status=status.HTTP_400_BAD_REQUEST)
         try:
+            serializer = ClassSignUpSerializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            class_obj = serializer.save()
             request.data['class_obj_id'] = class_obj.id
             lesson = Lesson.objects.filter(parent_id=request.data['lesson_id']).first()
             if lesson is None:
@@ -70,6 +74,8 @@ class ClassAPIView(APIView):
                         lesson = Lesson.objects.filter(unit__level_id=level.id).order_by('id').first()
                 else:
                     lesson = Lesson.objects.filter(unit_id=unit.id).order_by('id').first()
+            #if lesson is None:
+            #    lesson = Lesson.objects.get(pk=request.data['lesson_id'])
             for student in request.data['students']:
                 request.data['student_id'] = student['id']
                 serializer = StudentClassSignUpSerializer(data=request.data)
