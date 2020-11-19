@@ -22,6 +22,9 @@ class CityAPIView(APIView):
 
     def get(self, request, *args, **kwargs):
         """Handle HTTP GET request."""
-        cities = City.objects.all()
+        if 'country_id' in request.GET:
+            cities = City.objects.filter(state__country_id=request.GET['country_id'])
+        else:
+            cities = City.objects.all()
         serializer = CityModelSerializer(cities, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

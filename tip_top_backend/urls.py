@@ -21,6 +21,7 @@ urlpatterns = [
     path('', include(('tip_top_backend.lessons.urls', 'lessons'), namespace='lessons')),
     path('', include(('tip_top_backend.roles.urls', 'roles'), namespace='roles')),
     path('', include(('tip_top_backend.documents.urls', 'documents'), namespace='documents')),
+    path('', include(('tip_top_backend.countries.urls', 'countries'), namespace='countries')),
     path('', include(('tip_top_backend.cities.urls', 'cities'), namespace='cities')),
     path('', include(('tip_top_backend.classes.urls', 'classes'), namespace='classes')),
     path('', include(('tip_top_backend.students.urls', 'students'), namespace='students')),

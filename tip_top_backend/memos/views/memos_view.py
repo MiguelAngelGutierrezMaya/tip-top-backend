@@ -59,13 +59,19 @@ class MemoAPIView(APIView):
 
     def post(self, request, *args, **kwargs):
         """Handle HTTP POST request."""
-        serializer = MemoSignUpSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        memo_obj = serializer.save()
-        if request.data['type'] == Constants.PUBLIC:
-            saveNotification(request, serializer, memo_obj)
-        data = MemoModelSerializer(memo_obj).data
-        return Response(data, status=status.HTTP_201_CREATED)
+        request.data['array_comments'] = request.data['comments']
+        for student in request.data['students']:
+            request.data['student_class_id'] = int(student['id'])
+            for comment in request.data['array_comments']:
+                if int(comment['data']['id']) == int(student['id']):
+                    request.data['comments'] = comment['data']['value']
+                    break
+            serializer = MemoSignUpSerializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            memo_obj = serializer.save()
+            if request.data['type'] == Constants.PUBLIC:
+                saveNotification(request, serializer, memo_obj)
+        return Response(None, status=status.HTTP_201_CREATED)
 
     def patch(self, request, *args, **kwargs):
         """Handle HTTP PATCH request."""

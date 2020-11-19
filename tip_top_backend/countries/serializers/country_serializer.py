@@ -14,5 +14,6 @@ class CountryModelSerializer(serializers.ModelSerializer):
         """Meta class."""
         model = Country
         fields = [
+            'id',
             'name'
         ]
