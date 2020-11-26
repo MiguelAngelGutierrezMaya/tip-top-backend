@@ -13,3 +13,6 @@ class CityAdmin(admin.ModelAdmin):
     list_display = ('name', 'state',)
     search_fields = ('name', 'state',)
     list_filter = ('name', 'state',)
+
+    def has_delete_permission(self, request, obj=None):
+        return False

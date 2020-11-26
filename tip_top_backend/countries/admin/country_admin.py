@@ -14,3 +14,6 @@ class CountryAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
     list_filter = ('name',)
+
+    def has_delete_permission(self, request, obj=None):
+        return False
