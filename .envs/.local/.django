@@ -5,17 +5,7 @@ DJANGO_SETTINGS_MODULE=tip_top_backend.settings.local
 DJANGO_SECRET_KEY=ujb^a_bpuvvs0(2j4c^l7i=*sxa0l$5%laqs%ptnp*h3kk)5y!
 DJANGO_ADMIN_URL=admin/
 DJANGO_ALLOWED_HOSTS=localhost
-# DJANGO_ALLOWED_HOSTS=localhost,api.clover.pcaingenieria.co
 DJANGO_CORS_ORIGIN_WHITELIST=http://localhost:3000
-# DJANGO_CORS_ORIGIN_WHITELIST=domain1,domain2
-
-# Notifier Email
-# NOTIFIER_EMAIL=mgutierrez@pcasistencias.com
-# NOTIFIER_NAME=Tip-Top-English
-# USERNAME_SMTP=mgutierrez@pcasistencias.com
-# PASSWORD_SMTP=m1gu3l4ng3lgut13rr3z
-# HOST_SMTP=smtp.gmail.com
-# PORT_SMTP=587
 
 # Notifier Email
 NOTIFIER_EMAIL=app@mg.tiptopenglish.co
