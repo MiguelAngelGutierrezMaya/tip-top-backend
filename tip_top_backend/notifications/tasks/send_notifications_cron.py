@@ -33,7 +33,16 @@ def notification_service():
             msg.attach(MIMEText(render_to_string(notification.template + '.txt', data), 'plain'))
             msg.attach(MIMEText(render_to_string(notification.template + '.html', data), 'html'))
 
-            for f in ['logo.png', 'clase-asignada.png', 'bg-date.png', 'bg-date2.png', 'clase-programada.png']:
+            if data['type'] == 'assignment':
+                images = ['logo.png', 'clase-asignada.png', 'bg-date.png']
+            elif data['type'] == 'reminder':
+                images = ['logo.png', 'clase-asignada.png', 'bg-date2.png']
+            elif data['type'] == 'forgot-password':
+                images = ['logo.png', 'bg-date.png']
+            else:
+                images = ['logo.png']
+
+            for f in images:
                 fp = open(os.path.join(os.path.dirname(__file__) + '/../../templates/assets/', f), 'rb')
                 msg_img = MIMEImage(fp.read(), _subtype="png")
                 fp.close()
@@ -42,7 +51,7 @@ def notification_service():
 
             send = True
 
-            if data['type'] != 'assignment':
+            if data['type'] != 'assignment' and data['type'] != 'forgot-password':
                 datetime_formatted = datetime.datetime.strptime(data['date_init'], "%Y-%m-%d %H:%M")
                 current_date = (datetime.datetime.now() - datetime.timedelta(hours=5))
                 diff = datetime_formatted - current_date

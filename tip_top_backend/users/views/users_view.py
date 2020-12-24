@@ -1,5 +1,13 @@
 """Users views."""
 
+# Python dependencies
+import environ
+import json
+
+# Django
+from django.dispatch import receiver
+from django.urls import reverse
+
 # Django conf
 from django.conf import settings
 
@@ -26,6 +34,9 @@ from tip_top_backend.parents.serializers import (
     ParentModelSerializer,
     ParentSignUpSerializer
 )
+from tip_top_backend.notifications.serializers import (
+    NotificationSignUpSerializer
+)
 
 # Permissions
 from rest_framework.permissions import (IsAuthenticated)
@@ -39,6 +50,9 @@ from tip_top_backend.lessons.models import Lesson
 from tip_top_backend.utils.permissions import get_user_by_token
 from tip_top_backend.utils.constants import Constants
 import tip_top_backend.utils.permissions as utils_permissions
+
+# Third libraries
+from django_rest_passwordreset.signals import reset_password_token_created
 
 
 class UserLoginAPIView(APIView):
@@ -132,3 +146,42 @@ class UserAPIView(APIView):
             user.address = request.data['address']
         user.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@receiver(reset_password_token_created)
+def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
+    """
+    Handles password reset tokens
+    When a token is created, an e-mail needs to be sent to the user
+    :param sender: View Class that sent the signal
+    :param instance: View Instance that sent the signal
+    :param reset_password_token: Token Model Object
+    :param args:
+    :param kwargs:
+    :return:
+    """
+    env = environ.Env()
+
+    # Change password
+    reset_password_token.user.set_password(env('DJANGO_NEW_PASSWORD'))
+    reset_password_token.user.save()
+
+    # Notification data
+    data_obj = {
+        "username": reset_password_token.user.username,
+        "password": env('DJANGO_NEW_PASSWORD'),
+        "url": env('DJANGO_APP_URL'),
+        "type": "forgot-password"
+    }
+
+    serializer = NotificationSignUpSerializer(data={
+        'type': 'EMAIL',
+        'status': 'PENDING',
+        'to': reset_password_token.user.email,
+        'data': json.dumps(data_obj),
+        'title': 'Recuperación de contraseña, Password recover',
+        'template': 'email/forgot-password',
+    })
+    
+    serializer.is_valid(raise_exception=True)
+    serializer.save()

@@ -49,6 +49,7 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     'rest_framework.authtoken',
+    'django_rest_passwordreset',
     'rest_framework',
     'corsheaders',
     'letsencrypt',

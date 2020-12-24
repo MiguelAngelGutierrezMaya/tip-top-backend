@@ -5,6 +5,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include, re_path
+from django.conf.urls import url
 
 
 admin.site.site_header = 'API Tip-Top Systems'
@@ -14,6 +15,7 @@ admin.autodiscover()
 
 urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
+    url(r'^api/password-reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
     path('', include(('tip_top_backend.users.urls', 'users'), namespace='users')),
     path('', include(('tip_top_backend.levels.urls', 'levels'), namespace='levels')),
     path('', include(('tip_top_backend.units.urls', 'units'), namespace='units')),

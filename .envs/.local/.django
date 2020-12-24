@@ -7,6 +7,8 @@ DJANGO_ADMIN_URL=admin/
 DJANGO_ALLOWED_HOSTS=localhost
 DJANGO_CORS_ORIGIN_WHITELIST=http://localhost:3000
 
+DJANGO_NEW_PASSWORD=T1p-t0p.
+
 # Notifier Email
 NOTIFIER_EMAIL=app@mg.tiptopenglish.co
 NOTIFIER_NAME=Tip-Top-English
