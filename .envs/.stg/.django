@@ -1,12 +1,12 @@
 # General
-DJANGO_APP_URL=https://app.tiptopenglish.co
-DJANGO_MEDIA_URL=https://api.tiptopenglish.co
+DJANGO_APP_URL=https://test.tiptopenglish.co
+DJANGO_MEDIA_URL=https://api-test.tiptopenglish.co
 DJANGO_SETTINGS_MODULE=tip_top_backend.settings.production
 DJANGO_SECRET_KEY=#6dxjx!y%m589ey=yl%ntu&i2t(l$skom6ox+5_v#_fxrj-%cq
 DJANGO_ADMIN_URL=admin/
 DJANGO_DEBUG=False
-DJANGO_ALLOWED_HOSTS=localhost,app.tiptopenglish.co,api.tiptopenglish.co
-DJANGO_CORS_ORIGIN_WHITELIST=https://app.tiptopenglish.co
+DJANGO_ALLOWED_HOSTS=localhost,test.tiptopenglish.co,api-test.tiptopenglish.co
+DJANGO_CORS_ORIGIN_WHITELIST=https://test.tiptopenglish.co
 
 DJANGO_NEW_PASSWORD=T1p-t0p.
 

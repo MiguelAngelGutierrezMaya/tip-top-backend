@@ -10,8 +10,8 @@ services:
     volumes:
       - .:/app
     env_file:
-      - ./.envs/.production/.django
-      - ./.envs/.production/.postgres
+      - ./.envs/.stg/.django
+      - ./.envs/.stg/.postgres
     expose:
       - 80
     external_links:
