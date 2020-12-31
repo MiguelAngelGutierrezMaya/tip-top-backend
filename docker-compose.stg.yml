@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  django: &django
+    build:
+      context: .
+      dockerfile: ./compose/production/django/Dockerfile
+    image: tip_top_backend_production_django
+    container_name: tip_top_backend_django
+    volumes:
+      - .:/app
+    env_file:
+      - ./.envs/.production/.django
+      - ./.envs/.production/.postgres
+    expose:
+      - 80
+    external_links:
+      - postgres-prod:postgres
+    networks:
+      - contenedores
+    environment:
+      - "VIRTUAL_HOST=api-test.tiptopenglish.co"
+      - "LETSENCRYPT_HOST=api-test.tiptopenglish.co"
+    command: /start
+
+networks:
+  contenedores:
+    external: true
