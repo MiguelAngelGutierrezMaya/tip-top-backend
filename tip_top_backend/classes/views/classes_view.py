@@ -96,7 +96,8 @@ class ClassAPIView(APIView):
                 }
 
                 request.data['type'] = 'EMAIL'
-                request.data['status'] = 'PENDING'
+                # request.data['status'] = 'PENDING'
+                request.data['status'] = 'SEND'
                 request.data['to'] = student_obj.user.email
                 request.data['data'] = json.dumps(data_obj)
                 # Save Class notification
