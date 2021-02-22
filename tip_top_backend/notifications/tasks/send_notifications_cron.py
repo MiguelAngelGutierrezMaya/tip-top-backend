@@ -36,7 +36,7 @@ def notification_service():
             if data['type'] == 'assignment':
                 images = ['logo.png', 'clase-asignada.png', 'bg-date.png']
             elif data['type'] == 'reminder':
-                images = ['logo.png', 'clase-asignada.png', 'bg-date2.png']
+                images = ['logo.png', 'clase-programada.png', 'bg-date2.png']
             elif data['type'] == 'forgot-password':
                 images = ['logo.png', 'bg-date.png']
             else:
