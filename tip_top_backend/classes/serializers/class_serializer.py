@@ -53,10 +53,6 @@ class ClassSignUpSerializer(FriendlyErrorMessagesMixin, serializers.Serializer):
         init = data['init']
         end = data['end']
         class_obj = Class.objects.filter(init__lte=init, end__gte=init, state=True, user_id=data['user_id']).first()
-        current_date = (datetime.datetime.now() - datetime.timedelta(hours=4))
-        if current_date > init:
-            self.register_error(
-                error_message='A class must be scheduled at least one hour in advance,Se debe programar una clase con al menos una hora de anticipación', error_code=8000)
         if not class_obj is None:
             self.register_error(
                 error_message='There is already a class registered for the teacher at the same time,Ya existe una clase registrada para el profesor en el mismo horario', error_code=8000)
