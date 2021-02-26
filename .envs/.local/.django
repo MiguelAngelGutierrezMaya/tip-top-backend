@@ -10,6 +10,7 @@ DJANGO_CORS_ORIGIN_WHITELIST=http://localhost:3000
 DJANGO_NEW_PASSWORD=T1p-t0p.
 
 # Notifier Email
+ENABLE_STUDENT_NOTIFICATIONS=False
 NOTIFIER_EMAIL=app@mg.tiptopenglish.co
 NOTIFIER_NAME=Tip-Top-English
 USERNAME_SMTP=app@mg.tiptopenglish.co
