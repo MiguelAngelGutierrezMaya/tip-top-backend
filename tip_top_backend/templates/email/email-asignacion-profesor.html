@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TipTop English</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            text-decoration: none;
+        }
+
+        body {
+            height: 100vh;
+            width: 100vw;
+            padding-top: 50px;
+        }
+
+        .container {
+            margin: auto;
+            width: 300px;
+            background-color: #753e8a;
+            padding: 2em 1em;
+            border-radius: 20px;
+            height: auto;
+        }
+
+        .figure-title {
+            text-align: center;
+        }
+
+        .subcontainer {
+            margin: auto;
+        }
+
+        .section-text {
+            display: block;
+            padding: .5em 1em 1em;
+            color: #fff;
+            font-size: .9em;
+            font-family: poppins, sans;
+        }
+
+        .section-date {
+            margin: auto;
+            text-align: center;
+            background-image: url("cid:bg-date.png");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            width: 100%;
+            height: 7em;
+        }
+
+        .h-date {
+            color: #fff;
+            font-size: 1em;
+            font-family: poppins, sans;
+            padding-top: 1em;
+        }
+
+        .h-time {
+            color: #fbf1ad;
+            font-size: 3em;
+            font-family: poppins, sans;
+            font-weight: 600;
+        }
+
+        .link-container {
+            margin: 2em 0;
+            display: block;
+            text-align: center;
+        }
+
+        .link {
+            background-color: #38b1a8;
+            padding: 20px 30px;
+            color: #fff;
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: poppins, sans;
+            transition: all 0.3s ease-in;
+        }
+
+        .link:hover {
+            background-color: #38b1a9d2;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .subtext {
+            text-align: center;
+            color: #fff;
+            font-size: .7em;
+            font-family: poppins, sans;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <figure>
+            <img src="cid:logo.png" alt="Tip Top English Logo">
+        </figure>
+        <figure class="figure-title">
+            <img src="cid:clase-asignada.png" alt="Tienes una nueva clase asignada">
+        </figure>
+        <div class="subcontainer">
+            <div class="section-text">
+                <p class="parrafo">Hola, <strong>{{teacher}}!</strong></p>
+                <p>Tienes una clase de la lección <strong>{{lesson}}</strong></p>
+                <p>Programada para el próximo:</p>
+            </div>
+            <div class="section-date">
+                <h3 class="h-date">{{date}}</h3>
+                <h2 class="h-time">{{time}}</h2>
+            </div>
+            <div class="link-container">
+                <a href="{{url}}" class="link" style="color: #fff;">Link para ingresar a la clase</a>
+            </div>
+            <p class="subtext">Recuerda ingresar 5 minutos antes.</p>
+        </div>
+    </div>
+</body>
+
+</html>

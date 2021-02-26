@@ -85,6 +85,7 @@ class ClassAPIView(APIView):
                 student_obj.save()
 
                 data_obj = {
+                    "teacher": class_obj.user.first_name + ' ' + class_obj.user.last_name,
                     "student": student_obj.user.first_name + ' ' + student_obj.user.last_name,
                     "lesson": class_obj.lesson.title,
                     "date": class_obj.init.strftime("%A, %d th %B - %Y"),
@@ -96,24 +97,44 @@ class ClassAPIView(APIView):
                 }
 
                 request.data['type'] = 'EMAIL'
-                # request.data['status'] = 'PENDING'
-                request.data['status'] = 'SEND'
-                request.data['to'] = student_obj.user.email
+                request.data['status'] = 'PENDING'
+                request.data['to'] = class_obj.user.email
                 request.data['data'] = json.dumps(data_obj)
-                # Save Class notification
+
+                # Save Class notification for teacher
                 request.data['title'] = 'Clase asignada, Assigned class'
-                request.data['template'] = 'email/email-asignacion'
+                request.data['template'] = 'email/email-asignacion-profesor'
                 serializer = NotificationSignUpSerializer(data=request.data)
                 serializer.is_valid(raise_exception=True)
                 serializer.save()
-                # Save Class reminder notification
+                # Save Class reminder notification for teacher
                 request.data['title'] = 'Recordatorio de clase, Class reminder'
-                request.data['template'] = 'email/email-recordatorio'
+                request.data['template'] = 'email/email-recordatorio-profesor'
                 data_obj['type'] = "reminder"
                 request.data['data'] = json.dumps(data_obj)
                 serializer = NotificationSignUpSerializer(data=request.data)
                 serializer.is_valid(raise_exception=True)
                 serializer.save()
+
+                if env('ENABLE_STUDENT_NOTIFICATIONS').lower() in ['true', '1']:
+                    data_obj['type'] = "assignment"
+                    request.data['to'] = student_obj.user.email
+                    request.data['data'] = json.dumps(data_obj)
+
+                    # Save Class notification for student
+                    request.data['title'] = 'Clase asignada, Assigned class'
+                    request.data['template'] = 'email/email-asignacion'
+                    serializer = NotificationSignUpSerializer(data=request.data)
+                    serializer.is_valid(raise_exception=True)
+                    serializer.save()
+                    # Save Class reminder notification for student
+                    request.data['title'] = 'Recordatorio de clase, Class reminder'
+                    request.data['template'] = 'email/email-recordatorio'
+                    data_obj['type'] = "reminder"
+                    request.data['data'] = json.dumps(data_obj)
+                    serializer = NotificationSignUpSerializer(data=request.data)
+                    serializer.is_valid(raise_exception=True)
+                    serializer.save()
 
             data = ClassModelSerializer(class_obj).data
             return Response(data, status=status.HTTP_201_CREATED)
