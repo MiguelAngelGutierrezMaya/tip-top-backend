@@ -25,6 +25,8 @@ class StudentAPIView(APIView):
         """Handle HTTP GET request."""
         if 'current_lesson' in request.GET:
             students = Student.objects.filter(current_lesson_id=request.GET['current_lesson'])
+        if 'user' in request.GET:
+            students = Student.objects.filter(user_id=request.GET['user'])
         else:
             students = Student.objects.all()
         serializer = StudentModelSerializer(students, many=True)
