@@ -25,7 +25,8 @@ class StudentModelSerializer(serializers.ModelSerializer):
             'id',
             'user',
             'teacher',
-            'current_lesson'
+            'current_lesson',
+            'genre'
         )
 
 
