@@ -22,7 +22,7 @@ class User(AuditModel, AbstractUser):
     phone_number = models.CharField('Numero', max_length=20, null=False, blank=False)
     address = models.CharField('Direccion', max_length=100, null=False, blank=False)
     document_number = models.CharField('Documento', max_length=15, null=False, blank=False)
-    email = models.EmailField('Email address', unique=True)
+    email = models.EmailField('Email address', unique=False)
     admission_date = models.DateTimeField(default=datetime.now, blank=True)
     link = models.URLField('Enlace de videollamada', max_length=200, null=True, blank=True)
 

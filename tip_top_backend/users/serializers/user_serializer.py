@@ -74,11 +74,7 @@ class UserSignUpSerializer(FriendlyErrorMessagesMixin, serializers.Serializer):
         """Verify password match."""
         passwd = data['password']
         passwd_conf = data['password_confirmation']
-        user_email = User.objects.filter(email=data['email']).first()
         user_username = User.objects.filter(username=data['username']).first()
-        if not user_email is None:
-            self.register_error(
-                error_message='Email already exist,El email ingresado ya existe', error_code=8000)
         if not user_username is None:
             self.register_error(
                 error_message='Username already exist,El nombre de usuario ingresado ya existe', error_code=8000)
