@@ -75,6 +75,7 @@ LOCAL_APPS = [
     'tip_top_backend.materials.apps.MaterialsAppConfig',
     'tip_top_backend.comments.apps.CommentsAppConfig',
     'tip_top_backend.classes.apps.ClassesAppConfig',
+    'tip_top_backend.class_repetitions.apps.ClassRepetitionsAppConfig',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

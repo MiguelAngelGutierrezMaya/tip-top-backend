@@ -31,5 +31,6 @@ urlpatterns = [
     path('', include(('tip_top_backend.memos.urls', 'memos'), namespace='memos')),
     path('', include(('tip_top_backend.notifications.urls', 'notifications'), namespace='notifications')),
     path('', include(('tip_top_backend.parents.urls', 'parents'), namespace='parents')),
+    path('', include(('tip_top_backend.class_repetitions.urls', 'class_repetitions'), namespace='class_repetitions')),
     # re_path(r'^\.well-known/', include('letsencrypt.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
