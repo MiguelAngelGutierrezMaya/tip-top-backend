@@ -21,6 +21,10 @@ from tip_top_backend.student_classes.serializers import (
 from tip_top_backend.notifications.serializers import (
     NotificationSignUpSerializer
 )
+from tip_top_backend.class_repetitions.serializers.class_repetition_serializer import ClassRepetitionSignUpSerializer
+
+# Tasks
+from tip_top_backend.class_repetitions.tasks import class_repetition_cron
 
 # Model
 from tip_top_backend.classes.models import Class
@@ -59,6 +63,7 @@ class ClassAPIView(APIView):
             if student_class:
                 return Response(f"A class with the same content as the lesson has already been scheduled for the student {student_class.student.user.first_name} {student_class.student.user.last_name},Ya ha sido programada una clase con el mismo contenido de la lección para el estudiante {student_class.student.user.first_name} {student_class.student.user.last_name}", status=status.HTTP_400_BAD_REQUEST)
         try:
+            request.data['class_repetition_id'] = None
             serializer = ClassSignUpSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             class_obj = serializer.save()
@@ -135,6 +140,17 @@ class ClassAPIView(APIView):
                     serializer = NotificationSignUpSerializer(data=request.data)
                     serializer.is_valid(raise_exception=True)
                     serializer.save()
+
+            # Si la clase va con repeticiones
+            if 'days' in request.data and len(request.data['days']) > 0:
+                request.data['last_repeat_date'] = datetime.datetime.now()
+                serializer = ClassRepetitionSignUpSerializer(data=request.data)
+                serializer.is_valid(raise_exception=True)
+                class_repetition = serializer.save()
+                class_obj.class_repetition_id = class_repetition.id
+                class_obj.save()
+                # Se generan las repeticiones respectivas de la nueva clase
+                class_repetition_cron.single_class_repetition_service(class_obj.id)
 
             data = ClassModelSerializer(class_obj).data
             return Response(data, status=status.HTTP_201_CREATED)
