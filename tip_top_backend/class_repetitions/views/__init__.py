@@ -1,0 +1,1 @@
+from .class_repetitions_view import ClassRepetitionAPIView

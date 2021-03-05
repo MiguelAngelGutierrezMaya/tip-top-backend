@@ -1,0 +1,2 @@
+from .class_repetition_serializer import ClassRepetitionModelSerializer
+from .class_repetition_serializer import ClassRepetitionSignUpSerializer
