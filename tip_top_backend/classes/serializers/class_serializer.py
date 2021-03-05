@@ -10,6 +10,7 @@ from rest_framework_friendly_errors.mixins import FriendlyErrorMessagesMixin
 # Serializers
 from tip_top_backend.lessons.serializers.lesson_serializer import LessonModelSerializer
 from tip_top_backend.users.serializers.user_serializer import UserModelSerializer
+from tip_top_backend.class_repetitions.serializers.class_repetition_serializer import ClassRepetitionModelSerializer
 
 # Model
 from tip_top_backend.classes.models import Class
@@ -20,6 +21,7 @@ class ClassModelSerializer(serializers.ModelSerializer):
 
     lesson = LessonModelSerializer(read_only=True)
     user = UserModelSerializer(read_only=True)
+    class_repetition = ClassRepetitionModelSerializer(read_only=True)
 
     class Meta:
         """Meta class."""
@@ -31,7 +33,8 @@ class ClassModelSerializer(serializers.ModelSerializer):
             'lesson',
             'state',
             'url',
-            'user'
+            'user',
+            'class_repetition'
         ]
 
 
@@ -44,6 +47,7 @@ class ClassSignUpSerializer(FriendlyErrorMessagesMixin, serializers.Serializer):
     id = serializers.ReadOnlyField()
     user_id = serializers.IntegerField(write_only=True)
     lesson_id = serializers.IntegerField(write_only=True)
+    class_repetition_id = serializers.IntegerField(write_only=True, allow_null=True)
     init = serializers.DateTimeField()
     end = serializers.DateTimeField()
     url = serializers.URLField()
