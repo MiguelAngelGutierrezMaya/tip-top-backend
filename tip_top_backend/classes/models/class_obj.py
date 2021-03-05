@@ -24,6 +24,7 @@ class Class(AuditModel):
     # ManyToOne Relations
     lesson = models.ForeignKey('lessons.Lesson', on_delete=models.CASCADE)
     user = models.ForeignKey('users.User', on_delete=models.CASCADE)
+    class_repetition = models.ForeignKey('class_repetitions.ClassRepetition', null=True, on_delete=models.SET_NULL)
 
     REQUIRED_FIELDS = ['init', 'end']
 
