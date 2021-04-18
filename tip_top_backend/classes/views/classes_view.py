@@ -160,34 +160,44 @@ class ClassAPIView(APIView):
     def patch(self, request, *args, **kwargs):
         """Handle HTTP PATCH request."""
         class_obj = Class.objects.get(pk=request.data['id'])
-        if not class_obj.state:
-            return Response("The course is already canceled,El curso ya se encuentra cancelado", status=status.HTTP_400_BAD_REQUEST)
-        current_date = (datetime.datetime.now() - datetime.timedelta(hours=5))
-        if current_date > class_obj.init:
-            return Response("You cannot cancel classes that have already been or are taking place,No se pueden cancelar clases que ya se han realizado o se están realizando", status=status.HTTP_400_BAD_REQUEST)
+        if 'modify_hours' in request.data:
+            class_obj_init = Class.objects.filter(
+                init__lte=request.data['init'], end__gte=request.data['init'], state=True).first()
+            class_obj_end = Class.objects.filter(
+                init__lte=request.data['end'], end__gte=request.data['end'], state=True).first()
+            if class_obj_init or class_obj_end:
+                return Response("You cannot schedule a class at this time because there is already a class scheduled in a range that contains the entered start or end date,No puedes programar una clase en este horario porque ya hay una clase programada en un rango que contiene la fecha de inicio o de finalizacion ingresada", status=status.HTTP_400_BAD_REQUEST)
+            class_obj.init = request.data['init']
+            class_obj.end = request.data['end']
+        else:
+            if not class_obj.state:
+                return Response("The course is already canceled,El curso ya se encuentra cancelado", status=status.HTTP_400_BAD_REQUEST)
+            current_date = (datetime.datetime.now() - datetime.timedelta(hours=5))
+            if current_date > class_obj.init:
+                return Response("You cannot cancel classes that have already been or are taking place,No se pueden cancelar clases que ya se han realizado o se están realizando", status=status.HTTP_400_BAD_REQUEST)
 
-        student_classes = StudentClass.objects.filter(class_obj_id=class_obj.id)
-        for student_class in student_classes:
-            lesson = Lesson.objects.get(pk=student_class.student.current_lesson_id)
-            student_class_verify = StudentClass.objects.filter(
-                student_id=student_class.student.id, class_obj__lesson_id=lesson.parent_id, class_obj__state=True).first()
-            if student_class_verify is None:
-                student_class_verify = StudentClass.objects.filter(student_id=student_class.student.id,
-                                                                   class_obj__lesson__id__lt=lesson.id, class_obj__state=True).first()
-            if not student_class_verify is None:
-                if not student_class_verify.class_obj_id == class_obj.id:
-                    return Response(f"You cannot cancel this class as there is a class scheduled with a later lesson for the student {student_class.student.user.first_name},No puedes cancelar esta clase ya que hay una clase programada con una lección posterior para el estudiante {student_class.student.user.first_name}", status=status.HTTP_400_BAD_REQUEST)
-        for student_class in student_classes:
-            lesson = Lesson.objects.get(pk=student_class.student.current_lesson_id)
-            student_obj = Student.objects.get(pk=student_class.student.id)
-            if lesson.parent_id is None:
-                lesson = Lesson.objects.filter(id__lt=lesson.id).first()
-                if lesson is None:
-                    lesson = Lesson.objects.all().order_by('id').first()
-                student_obj.current_lesson_id = lesson.id
-            else:
-                student_obj.current_lesson_id = lesson.parent_id
-            student_obj.save()
-        class_obj.state = request.data['state']
+            student_classes = StudentClass.objects.filter(class_obj_id=class_obj.id)
+            for student_class in student_classes:
+                lesson = Lesson.objects.get(pk=student_class.student.current_lesson_id)
+                student_class_verify = StudentClass.objects.filter(
+                    student_id=student_class.student.id, class_obj__lesson_id=lesson.parent_id, class_obj__state=True).first()
+                if student_class_verify is None:
+                    student_class_verify = StudentClass.objects.filter(student_id=student_class.student.id,
+                                                                       class_obj__lesson__id__lt=lesson.id, class_obj__state=True).first()
+                if not student_class_verify is None:
+                    if not student_class_verify.class_obj_id == class_obj.id:
+                        return Response(f"You cannot cancel this class as there is a class scheduled with a later lesson for the student {student_class.student.user.first_name},No puedes cancelar esta clase ya que hay una clase programada con una lección posterior para el estudiante {student_class.student.user.first_name}", status=status.HTTP_400_BAD_REQUEST)
+            for student_class in student_classes:
+                lesson = Lesson.objects.get(pk=student_class.student.current_lesson_id)
+                student_obj = Student.objects.get(pk=student_class.student.id)
+                if lesson.parent_id is None:
+                    lesson = Lesson.objects.filter(id__lt=lesson.id).first()
+                    if lesson is None:
+                        lesson = Lesson.objects.all().order_by('id').first()
+                    student_obj.current_lesson_id = lesson.id
+                else:
+                    student_obj.current_lesson_id = lesson.parent_id
+                student_obj.save()
+            class_obj.state = request.data['state']
         class_obj.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
