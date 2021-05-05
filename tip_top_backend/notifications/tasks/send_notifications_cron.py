@@ -34,9 +34,9 @@ def notification_service():
             msg.attach(MIMEText(render_to_string(notification.template + '.html', data), 'html'))
 
             if data['type'] == 'assignment':
-                images = ['logo.png', 'clase-asignada.png', 'bg-date.png']
+                images = ['logo.png', 'clase-asignada.png', 'clase-asignada-en.png', 'bg-date.png']
             elif data['type'] == 'reminder':
-                images = ['logo.png', 'clase-programada.png', 'bg-date2.png']
+                images = ['logo.png', 'clase-programada.png', 'clase-programada-en.png', 'bg-date2.png']
             elif data['type'] == 'forgot-password':
                 images = ['logo.png', 'bg-date.png']
             else:
