@@ -46,7 +46,7 @@
         .section-date {
             margin: auto;
             text-align: center;
-            background-image: url("cid:bg-date.png");
+            background-image: url("{{images.bg}}");
             background-repeat: no-repeat;
             background-position: center;
             background-size: contain;
@@ -101,10 +101,10 @@
 <body>
     <div class="container">
         <figure>
-            <img src="cid:logo.png" alt="Tip Top English Logo">
+            <img src="{{images.logo}}" alt="Tip Top English Logo">
         </figure>
         <figure class="figure-title">
-            <img src="cid:clase-asignada-en.png" alt="You have a new class!">
+            <img src="{{images.body}}" alt="You have a new class!">
         </figure>
         <div class="subcontainer">
             <div class="section-text">

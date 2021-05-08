@@ -26,6 +26,24 @@ def notification_service():
     for notification in notifications:
         if notification.type == 'EMAIL':
             data = json.loads(notification.data)
+            url = env('DJANGO_MEDIA_URL') + '/media/emails/'
+            if data['type'] == 'assignment':
+                data['images'] = {'logo': url + 'logo.png', 'body': url +
+                                  'clase-asignada.png', 'bg': url + 'bg-date.png'}
+                if notification.template == 'email/email-asignacion-profesor':
+                    data['images'] = {'logo': url + 'logo.png', 'body': url +
+                                      'clase-asignada-en.png', 'bg': url + 'bg-date.png'}
+            elif data['type'] == 'reminder':
+                data['images'] = {'logo': url + 'logo.png', 'body': url +
+                                  'clase-programada.png', 'bg': url + 'bg-date2.png'}
+                if notification.template == 'email/email-recordatorio-profesor':
+                    data['images'] = {'logo': url + 'logo.png', 'body': url +
+                                      'clase-programada-en.png', 'bg': url + 'bg-date2.png'}
+            elif data['type'] == 'forgot-password':
+                data['images'] = {'logo': url + 'logo.png', 'bg': url + 'bg-date.png'}
+            else:
+                data['images'] = {'logo': url + 'logo.png'}
+
             msg = MIMEMultipart('alternative')
             msg['Subject'] = notification.title
             msg['From'] = email.utils.formataddr((env('NOTIFIER_NAME'), env('NOTIFIER_EMAIL')))
@@ -33,21 +51,12 @@ def notification_service():
             msg.attach(MIMEText(render_to_string(notification.template + '.txt', data), 'plain'))
             msg.attach(MIMEText(render_to_string(notification.template + '.html', data), 'html'))
 
-            if data['type'] == 'assignment':
-                images = ['logo.png', 'clase-asignada.png', 'clase-asignada-en.png', 'bg-date.png']
-            elif data['type'] == 'reminder':
-                images = ['logo.png', 'clase-programada.png', 'clase-programada-en.png', 'bg-date2.png']
-            elif data['type'] == 'forgot-password':
-                images = ['logo.png', 'bg-date.png']
-            else:
-                images = ['logo.png']
-
-            for f in images:
-                fp = open(os.path.join(os.path.dirname(__file__) + '/../../templates/assets/', f), 'rb')
-                msg_img = MIMEImage(fp.read(), _subtype="png")
-                fp.close()
-                msg_img.add_header('Content-ID', '<{}>'.format(f))
-                msg.attach(msg_img)
+            # for f in images:
+            #     fp = open(os.path.join(os.path.dirname(__file__) + '/../../templates/assets/', f), 'rb')
+            #     msg_img = MIMEImage(fp.read(), _subtype="png")
+            #     fp.close()
+            #     msg_img.add_header('Content-ID', '<{}>'.format(f))
+            #     msg.attach(msg_img)
 
             send = True
 
