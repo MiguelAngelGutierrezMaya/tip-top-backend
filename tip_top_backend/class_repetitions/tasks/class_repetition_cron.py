@@ -29,7 +29,7 @@ def generate_class_repetitions_service():
     updated_class_repetitions = []
     for class_repetition in class_repetitions:
         last_class = Class.objects.filter(class_repetition_id=class_repetition.id).order_by('-init').first()
-        if create_class_repetitions(last_class):
+        if last_class is not None and create_class_repetitions(last_class):
             updated_class_repetitions.append(ClassRepetition.objects.get(pk=class_repetition.id))
     return updated_class_repetitions
 
@@ -76,45 +76,51 @@ def create_class_repetitions(class_obj):
 
             students_class = StudentClass.objects.filter(class_obj_id=class_id)
 
-            # Se busca la leccion para la clase siguiendo la secuencia
-            student = students_class[0].student
-            new_lesson = Lesson.objects.filter(parent_id=student.current_lesson_id).first()
-            if new_lesson is None:
-                new_lesson = Lesson.objects.get(pk=student.current_lesson_id)
-                unit = Unit.objects.filter(parent_id=new_lesson.unit.id).first()
-                if unit is None:
-                    level = Level.objects.filter(parent_id=new_lesson.unit.level.id).first()
-                    if not level is None:
-                        new_lesson = Lesson.objects.filter(unit__level_id=level.id).order_by('id').first()
-                else:
-                    new_lesson = Lesson.objects.filter(unit_id=unit.id).order_by('id').first()
-            if new_lesson is None:
-                new_lesson = Lesson.objects.get(pk=student.current_lesson_id)
+            try:
+                # Se busca la leccion para la clase siguiendo la secuencia
+                student = students_class[0].student
+                new_lesson = Lesson.objects.filter(parent_id=student.current_lesson_id).first()
+                if new_lesson is None:
+                    new_lesson = Lesson.objects.get(pk=student.current_lesson_id)
+                    unit = Unit.objects.filter(parent_id=new_lesson.unit.id).first()
+                    if unit is None:
+                        level = Level.objects.filter(parent_id=new_lesson.unit.level.id).first()
+                        if not level is None:
+                            new_lesson = Lesson.objects.filter(unit__level_id=level.id).order_by('id').first()
+                    else:
+                        new_lesson = Lesson.objects.filter(unit_id=unit.id).order_by('id').first()
+                if new_lesson is None:
+                    new_lesson = Lesson.objects.get(pk=student.current_lesson_id)
 
-            # Si la nueva leccion es diferente a la que ya fue programada anteriormente
-            if new_lesson.id != current_lesson_id:
-                class_obj.lesson_id = student.current_lesson_id
-                class_obj.save()
+                # Si la nueva leccion es diferente a la que ya fue programada anteriormente
+                if new_lesson.id != current_lesson_id:
+                    class_obj.lesson_id = student.current_lesson_id
+                    class_obj.save()
 
-                # Se establece la fecha de la ultima clase programada
-                if class_obj.end > last_date:
-                    last_date = class_obj.end
+                    # Se establece la fecha de la ultima clase programada
+                    if class_obj.end > last_date:
+                        last_date = class_obj.end
 
-                for student_class in students_class:
-                    student_class.pk = None
-                    student_class.created = None
-                    student_class.modified = None
-                    student_class.class_obj_id = class_obj.id
-                    student_class.save()
-                    student_class.student.current_lesson_id = new_lesson.id
-                    student_class.student.save()
+                    for student_class in students_class:
+                        student_class.pk = None
+                        student_class.created = None
+                        student_class.modified = None
+                        student_class.class_obj_id = class_obj.id
+                        student_class.save()
+                        student_class.student.current_lesson_id = new_lesson.id
+                        student_class.student.save()
 
-                    # Se generan las notificaciones pertinentes
-                    generate_notifications(class_obj, student_class.student)
+                        # Se generan las notificaciones pertinentes
+                        generate_notifications(class_obj, student_class.student)
 
-        class_repetition = ClassRepetition.objects.get(pk=class_obj.class_repetition_id)
-        class_repetition.last_repeat_date = last_date
-        class_repetition.save()
+                    # Se modifica la última fecha de repetición de la clase
+                    class_repetition = ClassRepetition.objects.get(pk=class_obj.class_repetition_id)
+                    class_repetition.last_repeat_date = last_date
+                    class_repetition.save()
+            except IndexError:
+                class_obj = Class.objects.get(pk=class_id)
+                class_obj.delete()
+
         return True
     else:
         return False
