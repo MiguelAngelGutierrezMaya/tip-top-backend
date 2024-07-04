@@ -28,6 +28,7 @@ class StudentClassAPIView(APIView):
     def get(self, request, *args, **kwargs):
         """Handle HTTP GET request."""
         user = get_user_by_token(request)
+        print('user', user, user.role.name, request.GET)
         if 'class_id' in request.GET and user.role.name != Constants.ROLE_USER:
             data = StudentClass.objects.filter(class_obj_id=request.GET['class_id'])
         elif user.role.name == Constants.ROLE_ADMIN:

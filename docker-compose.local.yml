@@ -15,13 +15,14 @@ services:
     ports:
       - "9000:8000"
     external_links:
-      - postgres-dev:postgres
+      # - postgres-dev:postgres
+      - postgres:postgres
     networks:
-      - containers_network
-    environment:
-      - "VIRTUAL_HOST=api.tiptopenglish.co"
+      - containers
+    # environment:
+    #   - "VIRTUAL_HOST=api.tiptopenglish.co"
     command: /start
 
 networks:
-  containers_network:
+  containers:
     external: true
